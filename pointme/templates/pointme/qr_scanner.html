@@ -153,17 +153,13 @@
                 <canvas id="canvas" width="240" height="240"></canvas>
             </div>
             <div id="result" class="">
-
                 <table>
                     <tr>
                         <th>Numéro de téléphone</th>
                         <th>Date du pointage</th>
                         <th>Heure du pointage</th>
                     </tr>
-                
                 </table>
-                
-
             </div>
             <p id="message"></p>
             
@@ -181,24 +177,22 @@
                         .catch(function(error) {
                             console.log("Erreur d'accès à la webcam : " + error);
                         });
-
-                        
-        function getCurrentDate() {
-            var today = new Date();
-            var dd = String(today.getDate()).padStart(2, '0');
-            var mm = String(today.getMonth() + 1).padStart(2, '0');
-            var yyyy = today.getFullYear();
-            return yyyy + '-' + mm + '-' + dd;
-        }
-
-        function getCurrentTime() {
-            var now = new Date();
-            var hours = String(now.getHours()).padStart(2, '0');
-            var minutes = String(now.getMinutes()).padStart(2, '0');
-            var seconds = String(now.getSeconds()).padStart(2, '0');
-            return hours + ':' + minutes + ':' + seconds;
-        }
-
+            
+                    function getCurrentDate() {
+                        var today = new Date();
+                        var dd = String(today.getDate()).padStart(2, '0');
+                        var mm = String(today.getMonth() + 1).padStart(2, '0');
+                        var yyyy = today.getFullYear();
+                        return yyyy + '-' + mm + '-' + dd;
+                    }
+            
+                    function getCurrentTime() {
+                        var now = new Date();
+                        var hours = String(now.getHours()).padStart(2, '0');
+                        var minutes = String(now.getMinutes()).padStart(2, '0');
+                        var seconds = String(now.getSeconds()).padStart(2, '0');
+                        return hours + ':' + minutes + ':' + seconds;
+                    }
             
                     function scanQRCode() {
                         let video = document.getElementById('video');
@@ -218,7 +212,8 @@
                                 url: '/verifier_qr_code/',
                                 type: 'POST',
                                 data: {
-                                    'qr_code': codeData.data
+                                    'qr_code': codeData.data,
+                                    'csrfmiddlewaretoken': '{{ csrf_token }}'  // Ajout du jeton CSRF
                                 },
                                 success: function(response) {
                                     if (response.valide) {
@@ -250,8 +245,7 @@
                                             var phoneCell = document.createElement('td');
                                             phoneCell.textContent = pointage.etudiant__telephone;
                                             row.appendChild(phoneCell);
-                                            
-                                            // Ajouter la date du pointage
+                                                                            // Ajouter la date du pointage
                                             var dateCell = document.createElement('td');
                                             dateCell.textContent = pointage.date_pointage;
                                             row.appendChild(dateCell);
@@ -264,7 +258,7 @@
                                             // Ajouter la ligne au tableau
                                             table.appendChild(row);
                                         }
-            
+
                                         // Ajouter le tableau au conteneur de résultats
                                         resultContainer.appendChild(table);
                                     } else {
@@ -278,12 +272,13 @@
                             });
                         }
                     }
-            
+
                     // Exécuter la fonction de scan toutes les 2 secondes
                     setInterval(scanQRCode, 2000);
                 });
-                
             </script>
+
+            
       
             <!-- /.container-fluid -->
 
