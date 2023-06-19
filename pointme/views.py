@@ -79,6 +79,34 @@ def inscription(request):
 
 
 
+# def connexion(request):
+#     if request.method == 'POST':
+#         # Récupérer les données du formulaire
+#         adresse_mail = request.POST['adresse_mail']
+#         password1 = request.POST['password1']
+
+#         # Récupérer les utilisateurs correspondant à l'adresse e-mail
+#         users = User.objects.filter(email=adresse_mail)
+
+#         if users.exists():
+#             # Vérifier le mot de passe pour chaque utilisateur
+#             for user in users:
+#                 if user.check_password(password1):
+#                     login(request, user)
+#                     messages.success(request, "Connexion réussie.")
+#                     response = redirect('accueil')
+#                     response.set_cookie("messages", "Connexion réussie.", max_age=604800)  # Exemple : le cookie expire dans 7 jours
+#                     return response
+#             messages.error(request, "Adresse e-mail ou mot de passe incorrect.")
+#         else:
+#             messages.error(request, "Adresse e-mail ou mot de passe incorrect.")
+
+#         return redirect('connexion')
+
+#     return render(request, 'pointme/connexion.html')
+
+from django.http import HttpResponse
+
 def connexion(request):
     if request.method == 'POST':
         # Récupérer les données du formulaire
@@ -87,14 +115,15 @@ def connexion(request):
 
         # Récupérer les utilisateurs correspondant à l'adresse e-mail
         users = User.objects.filter(email=adresse_mail)
-
+        print(users)
         if users.exists():
             # Vérifier le mot de passe pour chaque utilisateur
             for user in users:
                 if user.check_password(password1):
                     login(request, user)
-                    messages.success(request, "Connexion réussie.")
-                    return redirect('accueil')
+                    response = redirect('accueil')
+                    response.set_cookie("messages", "Connexion réussie.", max_age=604800)  # Exemple : le cookie expire dans 7 jours
+                    return response
             messages.error(request, "Adresse e-mail ou mot de passe incorrect.")
         else:
             messages.error(request, "Adresse e-mail ou mot de passe incorrect.")
@@ -102,6 +131,8 @@ def connexion(request):
         return redirect('connexion')
 
     return render(request, 'pointme/connexion.html')
+
+
 
 
 def generateQrCode(data):
