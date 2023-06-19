@@ -1,0 +1,164 @@
+{% load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion</title>
+    <!-- Custom fonts for this template-->
+    <link href="{% static 'vendor/fontawesome-free/css/all.min.css'%}" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+        rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link href="{% static 'css/sb-admin-2.min.css'%}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap.css'%}" rel="stylesheet">
+    <link href="{% static 'css/style.css'%}" rel="stylesheet">
+</head>
+<body>
+
+
+
+  <!-- Page Wrapper -->
+  <div id="wrapper">
+
+    <!-- Sidebar -->
+    <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
+
+        <!-- Sidebar - Brand -->
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+            <div class="sidebar-brand-icon rotate-n-15">
+                <i class="fas fa-laugh-wink"></i>
+            </div>
+            <div class="sidebar-brand-text mx-3">SMA <sup></sup></div>
+        </a>
+
+    </ul>
+    <!-- End of Sidebar -->
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            <!-- Topbar -->
+            <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                <!-- Sidebar Toggle (Topbar) -->
+                <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                    <i class="fa fa-bars"></i>
+                </button>
+
+              
+
+                <!-- Topbar Navbar -->
+                <ul class="navbar-nav ml-auto">
+
+                    <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                    <li class="nav-item dropdown no-arrow d-sm-none">
+                        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>
+                    </li>
+
+                    <div class="topbar-divider d-none d-sm-block"></div>
+
+                    <!-- Nav Item - User Information -->
+                    <li class="nav-item dropdown no-arrow">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">rootdysi</span>
+                            <img class="img-profile rounded-circle"
+                                src="img/undraw_profile.svg">
+                        </a>  
+                    </li>
+                </ul>
+            </nav>
+            <!-- End of Topbar -->
+            <!-- Begin Page Content -->
+            <h1 class="text-center my-2">Connexion</h1>
+                 <div class="container">
+                     <div class="row">
+                         <div class="col-md-6 offset-md-3">
+                             <div class="card bg-success">
+                                 <div class="card-body">
+                                        <!-- Formulaire de connexion -->
+                                        <form onsubmit="validateForm(event)" action="{% url 'connexion' %}" method="post">
+                                            {% csrf_token %}
+                                            
+                                            {% if messages %}
+                                            <div class="messages">
+                                                {% for message in messages %}
+                                                    <div class="alert alert-{{ message.tags }}">
+                                                      {{ message }}
+                                                    </div>
+                                                {% endfor %}
+                                             </div>
+                                            {% endif %}
+                                            <div class="md-3">
+                                                <label for="adresse_mail">Adresse Mail</label>
+                                                <input type="email" id="adresse_mail" name="adresse_mail" class="form-control" placeholder="Votre adresse mail" required>
+                                            </div>
+                                            <div class="md-3">
+                                                <label for="password1">Mot de passe</label>
+                                                <input type="password" id="password1" name="password1" class="form-control" placeholder="Votre mot de passe" required>
+                                            </div>
+                                            <!-- Autres champs du formulaire de connexion -->
+                                            <div class="container text-center">
+                                                <button type="submit" class="btn btn-primary my-2" id="connexion-btn">
+                                                    Se connecter
+                                                </button>
+                                            </div>
+                                        </form>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+                <div class="copyright text-center my-auto">
+                    <span>Copyright &copy; Bakeli 2023</span>
+                </div>
+            </div>
+        </footer>
+        <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+
+     <!-- Bootstrap core JavaScript-->
+     <script src="{% static 'vendor/jquery/jquery.min.js '%}"></script>
+     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js '%}"></script>
+ 
+     <script src="{% static 'js/jquery.js '%}"></script>
+     <script src="{% static 'js/bootstrap.js '%}"></script>
+     <script src="{% static 'js/popper.js '%}"></script>
+ 
+ 
+     <!-- Core plugin JavaScript-->
+     <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js '%}"></script>
+ 
+     <!-- Custom scripts for all pages-->
+     <script src="{% static 'js/sb-admin-2.min.js '%}"></script>
+ 
+     <!-- Page level plugins -->
+     <script src="{% static 'vendor/chart.js/Chart.min.js '%}"></script>
+ 
+     <!-- Page level custom scripts -->
+     <script src="{% static 'js/demo/chart-area-demo.js '%}"></script>
+     <script src="{% static 'js/demo/chart-pie-demo.js '%}"></script>
+ 
+    
+</body>
+</html>

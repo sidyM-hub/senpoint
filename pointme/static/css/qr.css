@@ -1,0 +1,18 @@
+/* qr.css */
+
+/* Styles pour le conteneur du scanner */
+#preview {
+    width: 100%;
+    height: 300;
+    margin-bottom: 20px;
+  }
+  
+  /* Styles pour le résultat du scan */
+  #result {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  
+  /* Autres styles personnalisés... */
+  

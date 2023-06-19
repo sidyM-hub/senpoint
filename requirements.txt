@@ -1,0 +1,14 @@
+asgiref==3.7.2
+colorama==0.4.6
+Django==4.2.2
+numpy==1.25.0
+opencv-python==4.7.0.72
+Pillow==9.5.0
+psycopg2==2.9.6
+pypng==0.20220715.0
+pyzbar==0.1.9
+qrcode==7.4.2
+secure-smtplib==0.1.1
+sqlparse==0.4.4
+typing_extensions==4.6.3
+tzdata==2023.3
