@@ -12,13 +12,29 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 from pathlib import Path
 import dj_database_url
-
+import environ
 import os
+
+# url = os.environ.get('DATABASES_URL')
+# if url:
+#     DATABASES = {
+#         'default': dj_database_url.parse(url)
+#     }
+# else:
+#     # Gérer le cas où l'URL de la base de données est manquante ou invalide
+#     DATABASES = {}
+
+
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 TEMPLATE_DIR =os.path.join(BASE_DIR, 'templates')
+
+env = environ.Env()
+env.read_env()  # Charge les variables d'environnement à partir du fichier .env
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -93,8 +109,10 @@ WSGI_APPLICATION = 'scanpointage.wsgi.application'
 # }
 
 DATABASES ={
-    'default': dj_database_url.parse(os.environ.get('DATABASES_URL'))
+    'default': dj_database_url.parse(env('DATABASE_URL'))
 }
+
+
 
 #rootsmascan pwd
 
@@ -146,6 +164,8 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_ROOT = 'C:/Users/sma/Desktop/Bakelipointage/scanpointage/pointme/media'
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 # MEDIA_URL = '/media/'
+
+
 
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
