@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'scanpointage.wsgi.application'
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
 # DATABASES = {
-#     'default': {
+#     'default': { 
 #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
 #         'NAME': 'bakpointme',
 #         'USER': 'postgres',
