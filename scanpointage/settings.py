@@ -10,6 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+from pathlib import Path
+import dj_database_url
+
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -78,16 +81,21 @@ WSGI_APPLICATION = 'scanpointage.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'bakpointme',
-        'USER': 'postgres',
-        'PASSWORD': 'rootsmascan',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'bakpointme',
+#         'USER': 'postgres',
+#         'PASSWORD': 'rootsmascan',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
+
+DATABASES ={
+    'default': dj_database_url.parse(os.environ.get('DATABASES_URL'))
 }
+
 #rootsmascan pwd
 
 # Password validation
