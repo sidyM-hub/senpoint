@@ -105,7 +105,6 @@ def inscription(request):
 
 #     return render(request, 'pointme/connexion.html')
 
-from django.http import HttpResponse
 
 def connexion(request):
     if request.method == 'POST':
@@ -122,6 +121,8 @@ def connexion(request):
                 if user.check_password(password1):
                     login(request, user)
                     response = redirect('accueil')
+                    if 'messages' in request.COOKIES:
+                        response.delete_cookie('messages')  # Supprimer le cookie existant s'il est présent
                     response.set_cookie("messages", "Connexion réussie.", max_age=604800)  # Exemple : le cookie expire dans 7 jours
                     return response
             messages.error(request, "Adresse e-mail ou mot de passe incorrect.")
