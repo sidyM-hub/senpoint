@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ajout Etudiant</title>
+    <title>Document</title>
     <!-- Custom fonts for this template-->
     <link href="{% static 'vendor/fontawesome-free/css/all.min.css'%}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -16,6 +16,7 @@
     <link href="{% static 'css/style.css'%}" rel="stylesheet">
 </head>
 <body>
+   
 
 
 
@@ -33,29 +34,8 @@
             <div class="sidebar-brand-text mx-3">SMA <sup></sup></div>
         </a>
 
-        <!-- Divider -->
-        <hr class="sidebar-divider my-0">
-
-        <!-- Nav Item - Dashboard -->
-        <hr class="sidebar-divider my-0">
-        <li class="nav-item active">
-            <a class="nav-link" href="{% url 'ajout' %}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Ajout</span></a>
-        </li>
-        <hr class="sidebar-divider">
-        <li class="nav-item active">
-            <a class="nav-link" href="{% url 'qr_scanner' %}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Qr_scanner</span></a>
-        </li>
-        <hr class="sidebar-divider my-0">
-        <li class="nav-item active">
-            <a class="nav-link" href="{% url 'deconnexion' %}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Deconnexion</span></a>
-        </li>
-       
+        <!-- Nav Item - Charts -->
+        
        
 
     </ul>
@@ -74,11 +54,18 @@
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                     <i class="fa fa-bars"></i>
                 </button>
-
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
 
-              <!-- Nav Item - User Information -->
+                    <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                    <li class="nav-item dropdown no-arrow d-sm-none">
+                        <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-search fa-fw"></i>
+                        </a>      
+                    </li>
+                    <div class="topbar-divider d-none d-sm-block"></div>
+       <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -87,61 +74,34 @@
                                 src="img/undraw_profile.svg">
                         </a>
                        
+                        
                     </li>
 
                 </ul>
 
             </nav>
-            <!-- End of Topbar -->
+              
+
+<!-- Reste du code HTML de votre template -->
 
             <!-- Begin Page Content -->
-            <h1 class="text-center my-2">Ajout Etudiants</h1>
-             <div class="container">
-                 <div class="row">
-                     <div class="col-md-6 offset-md-3">
-                         <div class="card bg-success">
-                             <div class="card-body">
-                                <!-- Formulaire d'inscription -->
-                                <form onsubmit="validateForm(event)" action="/pointme/ajout/" method="post">
-                                    {% csrf_token %}
-                                    {% if messages %}
-                                          {% for message in messages %}
-                                            <div class="alert alert-danger">
-                                                {{ message }}
-                                            </div>
-                                          {% endfor %}
-                                    {% endif %}
-                                    <div class="md-3">
-                                    <label for="nom">Nom</label>
-                                    <input type="text" id="nom" name="nom" class="form-control" placeholder="votre nom" required>
-                                  </div>
-                                  <div class="md-3">
-                                    <label for="prenom">Prenom</label>
-                                    <input type="text" id="prenom" name="prenom" class="form-control" placeholder="votre prenom" required>
-                                  </div>
-                                  <div class="md-3">
-                                    <label for="telephone">Numero telephone</label>
-                                    <input type="text" id="telephone" name="telephone" class="form-control" placeholder="votre numero" required>
-                                  </div>
-                                  <div class="md-3">
-                                    <label for="adresse_mail">Adresse Mail</label>
-                                    <input type="email" id="adresse_mail" name="adresse_mail" class="form-control" placeholder="votre adresse mail" required>
-                                  </div>
-                                 
-                                   <!-- Autres champs du formulaire -->
-                                <div class="container text-center">
-                                <button type="submit" class="btn btn-primary my-2" id="ajouter-etudiant-btn">
-                                  Ajouter un étudiant
-                                </button>
-                                </form>
+            <h1 class="text-center my-2">Pointage</h1>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 offset-md-2">
+                        <!-- Première partie -->
+                        
+                        
+                        <!-- Deuxième partie -->
+                        <div class="row">
+                            <div class="col-md-4">
 
-                             </div>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-        <!-- /.container-fluid -->
-                 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
             <!-- /.container-fluid -->
 
         </div>
@@ -158,10 +118,11 @@
         <!-- End of Footer -->
 
     </div>
-    <!-- End of Content Wrapper -->
+  
 
 </div>
-<!-- End of Page Wrapper -->
+
+
 
 
      <!-- Bootstrap core JavaScript-->

@@ -11,8 +11,8 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 from pathlib import Path
-import dj_database_url
-import environ
+# import dj_database_url
+# import environ
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -20,8 +20,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 TEMPLATE_DIR =os.path.join(BASE_DIR, 'templates')
 
-env = environ.Env()
-env.read_env()  # Charge les variables d'environnement à partir du fichier .env
+# env = environ.Env()
+#env.read_env()  # Charge les variables d'environnement à partir du fichier .env
 
 
 
@@ -85,20 +85,20 @@ WSGI_APPLICATION = 'scanpointage.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-# DATABASES = {
-#     'default': { 
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': 'bakpointme',
-#         'USER': 'postgres',
-#         'PASSWORD': 'rootsmascan',
-#         'HOST': 'localhost',
-#         'PORT': '5432',
-#     }
-# }
-
-DATABASES ={
-    'default': dj_database_url.parse(env('DATABASE_URL'))
+DATABASES = {
+    'default': { 
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'bakpointme',
+        'USER': 'postgres',
+        'PASSWORD': 'rootsmascan',
+        'HOST': 'localhost',
+        'PORT': '5432',
+    }
 }
+
+# DATABASES ={
+#     'default': dj_database_url.parse(env('DATABASE_URL'))
+# }
 
 
 

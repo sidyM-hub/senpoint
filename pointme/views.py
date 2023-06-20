@@ -7,7 +7,7 @@ from .forms import EtudiantForm
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
 import os
 from django.core.files import File
 import qrcode
@@ -20,6 +20,7 @@ import cv2
 from pyzbar import pyzbar
 import qrcode
 import numpy
+import json
 
 
 
@@ -35,6 +36,11 @@ def base(request):
     etudiants = Etudiant.objects.all()
     return render(request, "pointme/base.html",{'etudiants':etudiants})
     # return render(request, "pointme/base.html")
+    
+def afficheqrcode(request):
+    etudiants = Etudiant.objects.all()
+    return render(request, "pointme/afficheqrcode.html",{'etudiants':etudiants}) 
+    # return render(request, "pointme/accueil.html")     
 
 
 
@@ -120,7 +126,7 @@ def connexion(request):
             for user in users:
                 if user.check_password(password1):
                     login(request, user)
-                    response = redirect('accueil')
+                    response = redirect('qr_scanner')
                     if 'messages' in request.COOKIES:
                         response.delete_cookie('messages')  # Supprimer le cookie existant s'il est présent
                     response.set_cookie("messages", "Connexion réussie.", max_age=604800)  # Exemple : le cookie expire dans 7 jours
@@ -134,6 +140,14 @@ def connexion(request):
     return render(request, 'pointme/connexion.html')
 
 
+
+
+def deconnexion(request):
+    logout(request)
+    response = redirect('connexion')
+    response.delete_cookie('messages')  # Supprimer le cookie existant s'il est présent
+    response.set_cookie("messages", "Déconnexion réussie.", max_age=604800)  # Exemple : le cookie expire dans 7 jours
+    return response
 
 
 def generateQrCode(data):
@@ -187,6 +201,8 @@ def ajout(request):
     return render(request, "pointme/ajout.html", {'form': form, 'etudiants': etudiants})
 
 
+
+
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -231,15 +247,22 @@ from .models import EtudiantScan
 from django.shortcuts import render
 from .models import EtudiantScan
 
-# def affiche_scan(request):
-#     etudiant_scan = EtudiantScan.objects.last()  # Récupérer le dernier scan enregistré
+def affiche(request):
+    etudiants_scannes = EtudiantScan.objects.all()
 
-#     context = {
-#         'etudiant_scan': etudiant_scan
-#     }
-#     return render(request, 'pointme/affichescan.html', context)
+    context = {
+        'etudiants_scannes': etudiants_scannes
+    }
+    return render(request, "pointme/affiche.html", context)
 
 
+from django.shortcuts import render, get_object_or_404
+from django.http import JsonResponse
+from .models import Etudiant, EtudiantScan
+from django.utils.timezone import now
+
+
+from .models import EtudiantScan
 from django.http import JsonResponse
 from .models import EtudiantScan
 
@@ -247,24 +270,39 @@ def qr_scanner(request):
     if request.method == 'POST':
         qr_code_data = request.POST.get('qr_code_data')
         telephone = request.POST.get('telephone')
-        
-        # Enregistrer les informations du scan dans la base de données
-        etudiant_scan = EtudiantScan.objects.create(qr_code_data=qr_code_data, telephone=telephone, date_scan=timezone.now())
-        etudiant_scan.save()
-        
-        # Récupérer la date et l'heure du scan
-        date_scan = etudiant_scan.date_scan.date()
-        heure_scan = etudiant_scan.date_scan.time()
-        
-        # Afficher le numéro de téléphone extrait du QR code, la date et l'heure du scan
-        context = {
-            'telephone': telephone,
-            'date_scan': date_scan,
-            'heure_scan': heure_scan
-        }
-        return render(request, 'pointme/qr_scanner.html', context)
-    
+
+        # Vérifier si l'étudiant a déjà effectué un scan
+        try:
+            etudiant_scan = EtudiantScan.objects.get(telephone=telephone)
+            etudiant_scan.date_scan = now().date()
+            etudiant_scan.heure_scan = now().time()
+            etudiant_scan.save()
+
+            # Récupérer tous les scans d'étudiants
+            etudiants_scannes = EtudiantScan.objects.all()
+
+            # Afficher les informations mises à jour
+            context = {
+                'etudiants_scannes': etudiants_scannes
+            }
+            return render(request, 'pointme/qr_scanner.html', context)
+
+        except EtudiantScan.DoesNotExist:
+            # Enregistrer les informations du scan dans la base de données
+            etudiant_scan = EtudiantScan.objects.create(qr_code_data=qr_code_data, telephone=telephone,
+                                                        date_scan=now().date(), heure_scan=now().time())
+
+            # Récupérer tous les scans d'étudiants
+            etudiants_scannes = EtudiantScan.objects.all()
+
+            # Afficher les informations
+            context = {
+                'etudiants_scannes': etudiants_scannes
+            }
+            return render(request, 'pointme/qr_scanner.html', context)
+
     return render(request, 'pointme/qr_scanner.html')
+
 
 def verifier_qr_code(request):
     if request.method == 'POST':
@@ -277,18 +315,48 @@ def verifier_qr_code(request):
         except EtudiantScan.DoesNotExist:
             valide = False
 
-        # Récupérer tous les pointages de l'étudiant correspondant au QR code
-        pointages = EtudiantScan.objects.filter(qr_code_data=qr_code)
+        # Récupérer tous les scans d'étudiants
+        etudiants_scannes = EtudiantScan.objects.all()
 
         # Préparer la réponse JSON
         response = {
             'valide': valide,
-            'pointages': [{
-                'etudiant__telephone': pointage.telephone,
-                'date_pointage': pointage.date_scan.strftime('%Y-%m-%d'),
-                'heure_pointage': pointage.date_scan.strftime('%H:%M:%S'),
-            } for pointage in pointages]
+            'etudiants_scannes': [{
+                'telephone': etudiant.telephone,
+                'date_pointage': etudiant.date_scan.strftime('%Y-%m-%d'),
+                'heure_pointage': etudiant.heure_scan.strftime('%H:%M:%S'),
+            } for etudiant in etudiants_scannes]
         }
 
+        # Mettre à jour les informations existantes si l'étudiant a déjà effectué un scan
+        if valide:
+            etudiant_scan.telephone = request.POST.get('telephone')
+            etudiant_scan.date_scan = now().date()
+            etudiant_scan.heure_scan = now().time()
+            etudiant_scan.save()
+
         return JsonResponse(response)
+
+
+from django.shortcuts import render, get_object_or_404
+from .models import Etudiant
+
+def recherche_etudiant(request):
+    etudiant = None
+    qr_code_url = None
+
+    if request.method == 'POST':
+        telephone = request.POST.get('telephone')
+        etudiant = Etudiant.objects.filter(telephone=telephone).first()
+
+        if etudiant:
+            qr_code_url = etudiant.qr_code.url
+            messages.success(request, "Étudiant trouvé avec le numéro de téléphone spécifié.")
+        else:
+            messages.error(request, "Aucun étudiant trouvé avec ce numéro de téléphone.")
+
+    return render(request, 'pointme/recherche_etudiant.html', {'etudiant': etudiant, 'qr_code_url': qr_code_url})
+
+
+
 

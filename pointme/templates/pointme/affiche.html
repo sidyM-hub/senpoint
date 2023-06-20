@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Affichage</title>
     <!-- Custom fonts for this template-->
     <link href="{% static 'vendor/fontawesome-free/css/all.min.css'%}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -22,14 +22,14 @@
   <div id="wrapper">
 
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
         <!-- Sidebar - Brand -->
-        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="#">
             <div class="sidebar-brand-icon rotate-n-15">
                 <i class="fas fa-laugh-wink"></i>
             </div>
-            <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+            <div class="sidebar-brand-text mx-3">SMA </div>
         </a>
 
         <!-- Divider -->
@@ -47,19 +47,19 @@
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Ajout</span></a>
         </li>
-        <hr class="sidebar-divider">
+        <!-- <hr class="sidebar-divider">
         <li class="nav-item active">
             <a class="nav-link" href="{% url 'connexion' %}l">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
-        </li>
-        <hr class="sidebar-divider my-0">
+        </li> -->
+        <!-- <hr class="sidebar-divider my-0">
         <li class="nav-item active">
             <a class="nav-link" href="{% url 'connexion' %}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
                 <span>Dashboard</span></a>
         </li>
-       
+        -->
        
 
     </ul>
@@ -114,7 +114,7 @@
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">rootdysi</span>
                             <img class="img-profile rounded-circle"
                                 src="img/undraw_profile.svg">
                         </a>
@@ -146,29 +146,42 @@
             </nav>
             <!-- End of Topbar -->
 
-            <!-- Begin Page Content -->Affiche Scan</h1>
+            <!-- Begin Page Content -->
             
+           <!-- affiche.html -->
+           {% block content %}
+           <style>
+               table {
+                   border-collapse: collapse;
+                   width: 100%;
+               }
+           
+               th, td {
+                   padding: 8px;
+                   text-align: left;
+                   border-bottom: 1px solid #ddd;
+               }
+           </style>
+           
+           <h1>Informations des étudiants scannés</h1>
+           <table>
+               <tr>
+                   <th>Numéro de téléphone</th>
+                   <th>Date de scan</th>
+                   <th>Heure de scan</th>
+               </tr>
+               {% for etudiant in etudiants_scannes %}
+               <tr>
+                   <td>{{ etudiant.telephone }}</td>
+                   <td>{{ etudiant.date_scan|date:"d/m/Y" }}</td>
+                   <td>{{ etudiant.date_scan|time:"H:i:s" }}</td>
+               </tr>
+               {% endfor %}
+           </table>
+           {% endblock %}
            
 
-            {% block content %}
-            <h1>Résultats du scan</h1>
-            {% if etudiant_scan %}
-                <table>
-                <tr>
-                    <th>Téléphone</th>
-                    <th>Date du scan</th>
-                    <th>Heure du scan</th>
-                </tr>
-                <tr>
-                    <td>{{ etudiant_scan.telephone }}</td>
-                    <td>{{ etudiant_scan.date_scan }}</td>
-                    <td>{{ etudiant_scan.heure_scan }}</td>
-                </tr>
-                </table>
-            {% else %}
-                <p>Aucun scan n'a été effectué.</p>
-            {% endif %}
-            {% endblock %}
+            
 
 
               

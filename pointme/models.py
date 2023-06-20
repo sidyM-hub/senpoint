@@ -32,7 +32,9 @@ class Etudiant(models.Model):
 
 from django.db import models
 
+    
 class EtudiantScan(models.Model):
+    etudiant = models.ForeignKey(Etudiant, on_delete=models.CASCADE, default=None)
     qr_code_data = models.CharField(max_length=200)
     telephone = models.CharField(max_length=20)
     date_scan = models.DateField()
