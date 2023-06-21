@@ -34,9 +34,27 @@
         </a>
         <hr class="sidebar-divider">
         <li class="nav-item active">
-            <a class="nav-link" href="{% url 'qr_scanner' %}">
+            <a class="nav-link" href="{% url 'ajout' %}">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Qr_scanner</span></a>
+                <span>Ajout</span></a>
+        </li>
+        <hr class="sidebar-divider">
+        <li class="nav-item active">
+            <a class="nav-link" href="{% url 'accueil' %}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Liste Etudiants</span></a>
+        </li>
+        <hr class="sidebar-divider">
+        <li class="nav-item active">
+            <a class="nav-link" href="{% url 'deconnexion' %}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Deconnexion</span></a>
+        </li>
+        <hr class="sidebar-divider">
+        <li class="nav-item active">
+            <a class="nav-link" href="{% url 'recherche_etudiant' %}">
+                <i class="fas fa-fw fa-tachometer-alt"></i>
+                <span>Recherche</span></a>
         </li>
 
     </ul>

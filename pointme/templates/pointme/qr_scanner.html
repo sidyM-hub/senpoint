@@ -19,6 +19,14 @@
  
     <script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.rawgit.com/schmich/instascan-builds/master/instascan.min.js"></script>
+    <script src="https://cdn.rawgit.com/edwardellis/jquery-codescanner/master/jquery.codeScanner.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@zxing/library@0.18.4/zxing.min.js"></script>
+
+
     <style>
         #video-container {
             display: flex;
@@ -146,105 +154,109 @@
             <!-- End of Topbar -->
 
             <!-- Begin Page Content -->
-      
+            {% block content %}
+<div id="video-container">
+    <video id="video" width="0" height="480" autoplay playsinline></video>
+    <canvas id="canvas" width="240" height="240"></canvas>
+</div>
+<div id="result" class=""></div>
+<p id="message"></p>
+<h2>Informations des étudiants scannés</h2>
+<table>
+    <tr>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Numéro de téléphone</th>
+        <th>Adresse e-mail</th>
+        <th>Date du pointage</th>
+        <th>Heure du pointage</th>
+    </tr>
+    {% for etudiant in etudiants_scannes %}
+    <tr>
+        <td>{{ etudiant.nom }}</td>
+        <td>{{ etudiant.prenom }}</td>
+        <td>{{ etudiant.telephone }}</td>
+        <td>{{ etudiant.adresse_email }}</td>
+        <td>{{ etudiant.date_scan }}</td>
+        <td>{{ etudiant.heure_scan }}</td>
+    </tr>
+    {% endfor %}
+</table>
+<script>
+    $(document).ready(function() {
+        // Obtenir les éléments vidéo et canvas
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
 
-{% block content %}
-   
-    <div id="video-container">
-        <video id="video" width="0" height="480" autoplay playsinline></video>
-        <canvas id="canvas" width="240" height="240"></canvas>
-    </div>
-    <div id="result" class=""></div>
-    <p id="message"></p>
-    <h2>Informations des étudiants scannés</h2>
-    <table>
-        <tr>
-            <th>Numéro de téléphone</th>
-            <th>Date du pointage</th>
-            <th>Heure du pointage</th>
-        </tr>
-        {% for etudiant in etudiants_scannes %}
-        <tr>
-            <td>{{ etudiant.telephone }}</td>
-            <td>{{ etudiant.date_scan }}</td>
-            <td>{{ etudiant.heure_scan }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-    <script>
-        $(document).ready(function() {
-            // Obtenir les éléments vidéo et canvas
-            const video = document.getElementById('video');
-            const canvas = document.getElementById('canvas');
-            const context = canvas.getContext('2d');
+        // Vérifier si le navigateur prend en charge la caméra
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            // Demander l'autorisation d'accéder à la caméra
+            navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+                // Afficher la vidéo en direct dans l'élément vidéo
+                video.srcObject = stream;
+                video.play();
+            });
+        }
 
-            // Vérifier si le navigateur prend en charge la caméra
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                // Demander l'autorisation d'accéder à la caméra
-                navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
-                    // Afficher la vidéo en direct dans l'élément vidéo
-                    video.srcObject = stream;
-                    video.play();
+        // Fonction pour scanner le QR code à partir de la vidéo
+        function scanQRCode() {
+            // Dessiner la vidéo sur le canvas
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            // Obtenir les données de l'image du canvas
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+
+            // Utiliser la bibliothèque jsQR pour décoder le QR code
+            const code = jsQR(imageData.data, imageData.width, imageData.height);
+
+            // Vérifier si un QR code a été détecté
+            if (code) {
+                // Récupérer les données du QR code
+                const qrCodeData = code.data;
+
+                // Envoyer les données du QR code au serveur pour vérification
+                $.ajax({
+                    type: 'POST',
+                    url: '{% url "verifier_qr_code" %}',
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        qr_code: qrCodeData,
+                    },
+                    success: function(response) {
+                        if (response.valide) {
+                            $('#message').text('QR code valide');
+
+                            // Ajouter l'étudiant scanné à la liste des étudiants
+                            const row = $('<tr>');
+                            row.append($('<td>').text(response.etudiant.nom));
+                            row.append($('<td>').text(response.etudiant.prenom));
+                            row.append($('<td>').text(response.etudiant.telephone));
+                            row.append($('<td>').text(response.etudiant.adresse_email));
+                            row.append($('<td>').text(response.date_scan));
+                            row.append($('<td>').text(response.heure_scan));
+                            $('#result').append(row);
+                        } else {
+                            $('#message').text('QR code invalide');
+                        }
+                    },
+                    error: function() {
+                        $('#message').text('Une erreur s\'est produite lors de la vérification du QR code');
+                    }
                 });
             }
 
-            // Fonction pour scanner le QR code à partir de la vidéo
-            function scanQRCode() {
-                // Dessiner la vidéo sur le canvas
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-
-                // Obtenir les données de l'image du canvas
-                const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
-
-                // Utiliser la bibliothèque jsQR pour décoder le QR code
-                const code = jsQR(imageData.data, imageData.width, imageData.height);
-
-                // Vérifier si un QR code a été détecté
-                if (code) {
-                    // Récupérer les données du QR code
-                    const qrCodeData = code.data;
-
-                    // Envoyer les données du QR code au serveur pour vérification
-                    $.ajax({
-                        type: 'POST',
-                        url: '{% url "verifier_qr_code" %}',
-                        data: {
-                            csrfmiddlewaretoken: '{{ csrf_token }}',
-                            qr_code: qrCodeData
-                        },
-                        success: function(response) {
-                            if (response.valide) {
-                                $('#message').text('QR code valide');
-                            } else {
-                                $('#message').text('QR code invalide');
-                            }
-
-                            // Afficher les informations des étudiants scannés
-                            $('#result').empty();
-                            for (const etudiant of response.etudiants_scannes) {
-                                const row = $('<tr>');
-                                row.append($('<td>').text(etudiant.telephone));
-                                row.append($('<td>').text(etudiant.date_pointage));
-                                row.append($('<td>').text(etudiant.heure_pointage));
-                                $('#result').append(row);
-                            }
-                        },
-                        error: function() {
-                            $('#message').text('Une erreur s\'est produite lors de la vérification de QR code.');
-                           
-                        }
-                        });
-                        }
-                                    // Répéter la fonction de scan à chaque rafraîchissement de l'écran
+            // Appeler la fonction de scan à intervalles réguliers
             requestAnimationFrame(scanQRCode);
         }
 
-        // Démarrer le scan initial du QR code
+        // Appeler la fonction de scan pour la première fois
         scanQRCode();
     });
 </script>
 {% endblock %}
 
+            
 
          </div>
          <!-- End of Content Wrapper -->
