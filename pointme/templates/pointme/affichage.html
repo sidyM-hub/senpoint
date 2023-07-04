@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Connexion</title>
+    <title>Document</title>
     <!-- Custom fonts for this template-->
     <link href="{% static 'vendor/fontawesome-free/css/all.min.css'%}" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -14,8 +14,26 @@
     <link href="{% static 'css/sb-admin-2.min.css'%}" rel="stylesheet">
     <link href="{% static 'css/bootstrap.css'%}" rel="stylesheet">
     <link href="{% static 'css/style.css'%}" rel="stylesheet">
+    <style>
+        .table-container {
+            margin-top: 20px;
+        }
+        
+        .table-container table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table-container th, .table-container td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #ccc;
+        }
+    </style>
+    
 </head>
 <body>
+   
 
 
 
@@ -32,43 +50,57 @@
             </div>
             <div class="sidebar-brand-text mx-3">SMA <sup></sup></div>
         </a>
-        <hr class="sidebar-divider">
-        <li class="nav-item active">
-            <a class="nav-link" href="{% url 'ajout' %}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Ajout</span></a>
-        </li>
-        <hr class="sidebar-divider">
-        <li class="nav-item active">
-            <a class="nav-link" href="{% url 'accueil' %}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Liste Etudiants</span></a>
-        </li>
-        <hr class="sidebar-divider">
-        <li class="nav-item active">
-            <a class="nav-link" href="{% url 'deconnexion' %}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Deconnexion</span></a>
-        </li>
-        <hr class="sidebar-divider">
-        <li class="nav-item active">
-            <a class="nav-link" href="{% url 'recherche_etudiant' %}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Recherche</span></a>
-        </li>
-      
-        <hr class="sidebar-divider">
-        <li class="nav-item active">
-            <a class="nav-link" href="{% url 'qr_scanner' %}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Qr_scanner</span></a>
-        </li>
-        <hr class="sidebar-divider">
-        <li class="nav-item active">
-            <a class="nav-link" href="{% url 'affichage' %}">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Affichage</span></a>
-        </li>
+          <!-- Divider -->
+          <hr class="sidebar-divider my-0">
+
+          <!-- Nav Item - Dashboard -->
+          <hr class="sidebar-divider my-0">
+          <li class="nav-item active">
+              <a class="nav-link" href="{% url 'ajout' %}">
+                  <i class="fas fa-fw fa-tachometer-alt"></i>
+                  <span>Ajout</span></a>
+          </li>
+          <hr class="sidebar-divider">
+          <li class="nav-item active">
+              <a class="nav-link" href="{% url 'accueil' %}">
+                  <i class="fas fa-fw fa-tachometer-alt"></i>
+                  <span>Liste Etudiants</span></a>
+          </li>
+          <hr class="sidebar-divider">
+          <li class="nav-item active">
+              <a class="nav-link" href="{% url 'deconnexion' %}">
+                  <i class="fas fa-fw fa-tachometer-alt"></i>
+                  <span>Deconnexion</span></a>
+          </li>
+          <hr class="sidebar-divider">
+          <li class="nav-item active">
+              <a class="nav-link" href="{% url 'recherche_etudiant' %}">
+                  <i class="fas fa-fw fa-tachometer-alt"></i>
+                  <span>Recherche</span></a>
+          </li>
+          <!-- <hr class="sidebar-divider">
+          <li class="nav-item active">
+              <a class="nav-link" href="{% url 'affichage' %}">
+                  <i class="fas fa-fw fa-tachometer-alt"></i>
+                  <span>affichage</span></a>
+          </li> -->
+          <hr class="sidebar-divider">
+          <li class="nav-item active">
+              <a class="nav-link" href="{% url 'qr_scanner' %}">
+                  <i class="fas fa-fw fa-tachometer-alt"></i>
+                  <span>Qr_scanner</span></a>
+          </li>
+          <hr class="sidebar-divider">
+          <li class="nav-item active">
+              <a class="nav-link" href="{% url 'affichage' %}">
+                  <i class="fas fa-fw fa-tachometer-alt"></i>
+                  <span>Affichage</span></a>
+          </li>
+         
+        <!-- Nav Item - Charts -->
+        
+       
+
     </ul>
     <!-- End of Sidebar -->
 
@@ -85,9 +117,6 @@
                 <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
                     <i class="fa fa-bars"></i>
                 </button>
-
-              
-
                 <!-- Topbar Navbar -->
                 <ul class="navbar-nav ml-auto">
 
@@ -96,74 +125,58 @@
                         <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <i class="fas fa-search fa-fw"></i>
-                        </a>
+                        </a>      
                     </li>
-
                     <div class="topbar-divider d-none d-sm-block"></div>
-
-                    <!-- Nav Item - User Information -->
+       <!-- Nav Item - User Information -->
                     <li class="nav-item dropdown no-arrow">
                         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                             data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <span class="mr-2 d-none d-lg-inline text-gray-600 small">rootdysi</span>
                             <img class="img-profile rounded-circle"
                                 src="img/undraw_profile.svg">
-                        </a>  
+                        </a>
+                       
+                        
                     </li>
+
                 </ul>
+
             </nav>
-            <!-- End of Topbar -->
+              
+
+<!-- Reste du code HTML de votre template -->
+
             <!-- Begin Page Content -->
-            <h1 class="text-center my-2">Rechercher un étudiant</h1>
-<div class="container">
-  <div class="row">
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <form method="POST">
-        {% csrf_token %}
-        <div class="form-group">
-          <label for="telephone">Numéro de téléphone :</label>
-          <input type="text" class="form-control" id="telephone" name="telephone" required>
-        </div>
-        <button type="submit" class="btn btn-primary">Rechercher</button>
-      </form>
+    
+    <div class="table-container">
+        <h1>Étudiants authentifiés</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Téléphone</th>
+                    <th>Adresse e-mail</th>
+                    <th>Date du scan</th>
+                    <th>Heure du scan</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for etudiant in etudiants_authentifies %}
+                <tr>
+                    <td>{{ etudiant.nom }}</td>
+                    <td>{{ etudiant.prenom }}</td>
+                    <td>{{ etudiant.telephone }}</td>
+                    <td>{{ etudiant.adresse_mail }}</td>
+                    <td>{{ etudiant.etudiantscan.date_scan }}</td>
+                    <td>{{ etudiant.etudiantscan.heure_scan }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
-  </div>
-  {% if etudiant %}
-    <div class="row justify-content-center mt-4">
-      <div class="col-md-6">
-        <h2 class="text-center mb-3">Détails de l'étudiant</h2>
-        <ul class="list-group">
-          <li class="list-group-item"><strong>Nom :</strong> {{ etudiant.nom }}</li>
-          <li class="list-group-item"><strong>Prénom :</strong> {{ etudiant.prenom }}</li>
-          <li class="list-group-item"><strong>Téléphone :</strong> {{ etudiant.telephone }}</li>
-          <li class="list-group-item"><strong>Adresse e-mail :</strong> {{ etudiant.adresse_mail }}</li>
-        </ul>
-        <div class="text-center mt-3">
-          <strong>Code QR :</strong>
-          <img src="{{ etudiant.qr_code.url }}" alt="Code QR de l'étudiant" class="img-fluid">
-        </div>
-      </div>
-    </div>
-  {% endif %}
-  {% if messages %}
-    <div class="row justify-content-center mt-4">
-      <div class="col-md-6">
-        <ul class="list-group">
-          {% for message in messages %}
-            <li class="list-group-item{% if message.tags %} {{ message.tags }}{% endif %}">{{ message }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-    </div>
-  {% endif %}
-</div>
-
-  </div>
-</div>
-
-            
+    
             <!-- /.container-fluid -->
 
         </div>
@@ -180,9 +193,12 @@
         <!-- End of Footer -->
 
     </div>
-    <!-- End of Content Wrapper -->
+  
 
 </div>
+
+
+
 
      <!-- Bootstrap core JavaScript-->
      <script src="{% static 'vendor/jquery/jquery.min.js '%}"></script>

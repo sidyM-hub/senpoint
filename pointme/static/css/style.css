@@ -1,61 +1,12 @@
-/* .nav-links {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-  }
-  
-  .nav-item {
-    margin-bottom: 5px; 
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-  a.nav-link {
-    padding:  0.1 !important;
-  }
-  
 
-  #video-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 80vh;
-  }
-  #video {
-      width: auto;
-      height: 50%;
-  }
-  #canvas {
-      display: none;
-  }
-  .valide {
-      color: green;
-  }
-  .invalide {
-      color: red;
-  }
-  table {
-      margin-top: 20px;
-      border-collapse: collapse;
-  }
-  th, td {
-      padding: 8px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-  }
-  th {
-      background-color: #f2f2f2;
-  }
-
-table#tableau th {
-  padding: 10px;
+.camera-video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #000; /* Couleur de fond pour la partie sombre */
+  height: 5px; /* Hauteur souhaitée pour la vidéo de la caméra */
 }
-
-table#tableau th:nth-child(1),
-table#tableau th:nth-child(2),
-table#tableau th:nth-child(3) {
-  width: 100px; 
-  text-align: center;
+#qr-scanner {
+  width: 500px; /* Ajustez la valeur de width selon la taille souhaitée */
+  height: 400px; /* Ajustez la valeur de height selon la taille souhaitée */
 }
- */

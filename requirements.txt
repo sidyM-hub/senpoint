@@ -3,6 +3,7 @@ colorama==0.4.6
 dj-database-url==2.0.0
 Django==4.2.2
 django-environ==0.10.0
+django-qrcode==0.3
 gunicorn==20.1.0
 numpy==1.25.0
 opencv-python==4.7.0.72

@@ -20,9 +20,8 @@ class Etudiant(models.Model):
     date_inscription = models.DateTimeField(auto_now_add=True)
     password1 = models.CharField(max_length=128, blank=True, null=True)
     password2 = models.CharField(max_length=128, blank=True, null=True)
-    qr_code_data = models.CharField(max_length=200, default='')
-    date_scan = models.DateField(default=timezone.now)
-    heure_scan = models.TimeField(default=timezone.now)
+    qr_code_data = models.JSONField(default=dict, blank=True, unique=True)
+    authentifie = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.nom} {self.prenom}"
@@ -35,15 +34,15 @@ class Etudiant(models.Model):
         super().save(*args, **kwargs)
 
 
-# from django.db import models
+from django.db import models
+from django.utils import timezone
+from .models import Etudiant
 
-    
-# class EtudiantScan(models.Model):
-#     etudiant = models.ForeignKey(Etudiant, on_delete=models.CASCADE, default=None)
-#     qr_code_data = models.CharField(max_length=200)
-#     telephone = models.CharField(max_length=20)
-#     date_scan = models.DateField()
-#     heure_scan = models.TimeField()
+class EtudiantScan(models.Model):
+    etudiant = models.ForeignKey(Etudiant, on_delete=models.CASCADE)
+    date_scan = models.DateField(default=timezone.now)
+    heure_scan = models.TimeField(default=timezone.now)
 
-#     def __str__(self):
-#         return f"Scan de l'étudiant le {self.date_scan} à {self.heure_scan}"
+    def __str__(self):
+        return f"{self.etudiant} - {self.date_scan} {self.heure_scan}"
+
